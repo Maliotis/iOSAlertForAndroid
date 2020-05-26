@@ -36,16 +36,13 @@ configurations {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-    implementation 'com.eightbitlab:blurview:1.6.2'
-    implementation 'com.android.support:support-annotations:28.0.0'
 
     myConfig 'com.eightbitlab:blurview:1.6.2'
     myConfig 'com.android.support:support-annotations:28.0.0'
@@ -55,24 +52,3 @@ task copyLibs(type: Copy) {
     from configurations.myConfig
     into 'libs'
 }
-
-//project.afterEvaluate {
-//    def isAndroidLibraryProject = project.plugins.hasPlugin('com.android.library')
-//    if(isAndroidLibraryProject) {
-//        task copyDeps(type:Copy) {
-//            from configurations.myConfig {
-//                include '**/*.jar'
-//            }
-//            into "./build/intermediates/packaged-classes/release/libs" // this folder gets packaged inside the AAR
-//        }
-//        mergeReleaseJniLibFolders.dependsOn copyDeps // only this stage worked for me - neither earlier, nor later
-//
-//        task copyDebugDeps(type:Copy) {
-//            from configurations.myConfig {
-//                include '**/*.jar'
-//            }
-//            into "./build/intermediates/packaged-classes/debug/libs"
-//        }
-//        mergeDebugJniLibFolders.dependsOn copyDebugDeps
-//    }
-//}
