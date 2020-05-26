@@ -1,0 +1,3 @@
+rootProject.name='iOSLikeAlert'
+include ':app'
+include ':iosalert'
