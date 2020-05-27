@@ -1,8 +1,7 @@
 package com.maliotis.iosalert.blurview;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Nullable;
+
 
 public interface BlurViewFacade {
 
@@ -39,7 +38,7 @@ public interface BlurViewFacade {
      *                           Optional, by default frame is cleared with a transparent color.
      * @return {@link BlurViewFacade}
      */
-    BlurViewFacade setFrameClearDrawable(@Nullable Drawable frameClearDrawable);
+    BlurViewFacade setFrameClearDrawable( Drawable frameClearDrawable);
 
     /**
      * @param radius sets the blur radius
@@ -60,5 +59,5 @@ public interface BlurViewFacade {
      * @param overlayColor int color
      * @return {@link BlurViewFacade}
      */
-    BlurViewFacade setOverlayColor(@ColorInt int overlayColor);
+    BlurViewFacade setOverlayColor( int overlayColor);
 }

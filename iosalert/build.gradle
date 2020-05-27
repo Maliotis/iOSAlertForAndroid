@@ -43,7 +43,7 @@ configurations {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
@@ -51,7 +51,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    myConfig 'com.eightbitlab:blurview:1.6.2'
+
+
+    //myConfig 'com.eightbitlab:blurview:1.6.2'
     myConfig 'com.android.support:support-annotations:28.0.0'
 }
 
@@ -60,27 +62,33 @@ task copyLibs(type: Copy) {
     into 'libs'
 }
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.sourceFiles
-}
+//task sourcesJar(type: Jar) {
+//    classifier = 'sources'
+//    from android.sourceSets.main.java.sourceFiles
+//}
+//
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.sourceFiles
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//}
+//
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
+//task classesJar(type: Jar) {
+//    from "$buildDir/intermediates/classes/release"
+//}
 
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.sourceFiles
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//}
+//
+//afterEvaluate {
+//    javadoc.classpath += files(android.libraryVariants.collect { variant ->
+//        variant.javaCompile.classpath.files
+//    })
+//}
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-task classesJar(type: Jar) {
-    from "$buildDir/intermediates/classes/release"
-}
-
-artifacts {
-    archives classesJar
-    archives javadocJar
-    archives sourcesJar
-}

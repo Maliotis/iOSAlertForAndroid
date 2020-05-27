@@ -6,12 +6,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+
+
 
 /**
  * Blur Controller that handles all blur logic for the attached View.
@@ -31,7 +31,7 @@ final class BlockingBlurController implements BlurController {
     // This will help avoiding an extra bitmap allocation when passing the bitmap to RenderScript for blur.
     // Usually it's 16, but on Samsung devices it's 64 for some reason.
     private static final int ROUNDING_VALUE = 64;
-    @ColorInt
+
     static final int TRANSPARENT = 0;
 
     private final float scaleFactor = DEFAULT_SCALE_FACTOR;
@@ -66,7 +66,7 @@ final class BlockingBlurController implements BlurController {
     private boolean blurEnabled = true;
     private boolean initialized;
 
-    @Nullable
+
     private Drawable frameClearDrawable;
     private boolean hasFixedTransformationMatrix;
     private final Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
@@ -77,7 +77,7 @@ final class BlockingBlurController implements BlurController {
      *                 Can be Activity's root content layout (android.R.id.content)
      *                 or some of your custom root layouts.
      */
-    BlockingBlurController(@NonNull View blurView, @NonNull ViewGroup rootView, @ColorInt int overlayColor) {
+    BlockingBlurController( View blurView, ViewGroup rootView, int overlayColor) {
         this.rootView = rootView;
         this.blurView = blurView;
         this.overlayColor = overlayColor;
@@ -270,7 +270,7 @@ final class BlockingBlurController implements BlurController {
     }
 
     @Override
-    public BlurViewFacade setFrameClearDrawable(@Nullable Drawable frameClearDrawable) {
+    public BlurViewFacade setFrameClearDrawable( Drawable frameClearDrawable) {
         this.frameClearDrawable = frameClearDrawable;
         return this;
     }

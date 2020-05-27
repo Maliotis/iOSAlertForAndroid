@@ -1,7 +1,9 @@
 package com.maliotis.iosalert.blurview;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+
+
+
 
 public interface BlurAlgorithm {
     /**
@@ -32,6 +34,6 @@ public interface BlurAlgorithm {
      *
      * @return bitmap config supported by the given blur algorithm.
      */
-    @NonNull
+
     Bitmap.Config getSupportedBitmapConfig();
 }

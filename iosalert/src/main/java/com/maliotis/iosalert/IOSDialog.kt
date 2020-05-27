@@ -23,8 +23,8 @@ import androidx.annotation.IntRange
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColor
 import androidx.fragment.app.DialogFragment
-import eightbitlab.com.blurview.BlurView
-import eightbitlab.com.blurview.RenderScriptBlur
+import com.maliotis.iosalert.blurview.BlurView
+import com.maliotis.iosalert.blurview.RenderScriptBlur
 
 
 /**

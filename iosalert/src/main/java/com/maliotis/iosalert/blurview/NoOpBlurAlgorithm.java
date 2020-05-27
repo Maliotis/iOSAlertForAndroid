@@ -1,7 +1,7 @@
 package com.maliotis.iosalert.blurview;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+
 
 class NoOpBlurAlgorithm implements BlurAlgorithm {
     @Override
@@ -18,7 +18,7 @@ class NoOpBlurAlgorithm implements BlurAlgorithm {
         return true;
     }
 
-    @NonNull
+
     @Override
     public Bitmap.Config getSupportedBitmapConfig() {
         return Bitmap.Config.ARGB_8888;

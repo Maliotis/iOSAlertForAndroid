@@ -2,7 +2,8 @@ package com.maliotis.iosalert.blurview;
 
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
+
+
 
 //Used in edit mode and in case if no BlurController was set
 class NoOpController implements BlurController {
@@ -35,7 +36,7 @@ class NoOpController implements BlurController {
     }
 
     @Override
-    public BlurViewFacade setFrameClearDrawable(@Nullable Drawable windowBackground) {
+    public BlurViewFacade setFrameClearDrawable( Drawable windowBackground) {
         return this;
     }
 

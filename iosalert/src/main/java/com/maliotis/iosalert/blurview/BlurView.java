@@ -3,14 +3,16 @@ package com.maliotis.iosalert.blurview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import static eightbitlab.com.blurview.BlockingBlurController.TRANSPARENT;
+
+import com.maliotis.iosalert.R;
+
+import static com.maliotis.iosalert.blurview.BlockingBlurController.TRANSPARENT;
+
 
 /**
  * FrameLayout that blurs its underlying content.
@@ -22,7 +24,7 @@ public class BlurView extends FrameLayout {
 
     BlurController blurController = new NoOpController();
 
-    @ColorInt
+
     private int overlayColor;
 
     public BlurView(Context context) {
@@ -82,7 +84,7 @@ public class BlurView extends FrameLayout {
      *                 or (preferably) some of your layouts. The lower amount of Views are in the root, the better for performance.
      * @return {@link BlurView} to setup needed params.
      */
-    public BlurViewFacade setupWith(@NonNull ViewGroup rootView) {
+    public BlurViewFacade setupWith( ViewGroup rootView) {
         BlurController blurController = new BlockingBlurController(this, rootView, overlayColor);
         this.blurController.destroy();
         this.blurController = blurController;
@@ -102,7 +104,7 @@ public class BlurView extends FrameLayout {
     /**
      * @see BlurViewFacade#setOverlayColor(int)
      */
-    public BlurViewFacade setOverlayColor(@ColorInt int overlayColor) {
+    public BlurViewFacade setOverlayColor( int overlayColor) {
         this.overlayColor = overlayColor;
         return blurController.setOverlayColor(overlayColor);
     }

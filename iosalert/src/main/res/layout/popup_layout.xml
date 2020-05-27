@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@android:color/transparent">
 
-    <eightbitlab.com.blurview.BlurView
+    <com.maliotis.iosalert.blurview.BlurView
         android:id="@+id/blurView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,6 +78,6 @@
 
         </LinearLayout>
 
-    </eightbitlab.com.blurview.BlurView>
+    </com.maliotis.iosalert.blurview.BlurView>
 
 </LinearLayout>
