@@ -1,27 +1,20 @@
 package com.maliotis.iosalert
 
+import android.animation.ValueAnimator
 import android.app.Activity
-import android.app.Dialog
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
-import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewOutlineProvider
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.toColor
 import androidx.fragment.app.DialogFragment
 import com.maliotis.iosalert.blurview.BlurView
 import com.maliotis.iosalert.blurview.RenderScriptBlur
@@ -42,7 +35,11 @@ class IOSAlert private constructor(private val activity1: Activity,
                                    var iosNegativeClickListener: IOSClickListener?): DialogFragment() {
 
     var blurRadius: Float = 25f
-    var backgroundColor: Int? = null
+    var backgroundColor: Int = 0xDFFFFFFF.toInt()
+    var tintButtons: Boolean = true
+    var tintButtonsColor: Int = 0
+    var cornerRadius: Float = 10f
+
 
     /**
      * Builder class to build a dialog
@@ -54,8 +51,11 @@ class IOSAlert private constructor(private val activity1: Activity,
         var typeface: Typeface? = null
         var positiveText: String? = null
         var negativeText: String? = null
-        var backgroundColor: Int? = null
+        var backgroundColor: Int = 0xDFFFFFFF.toInt()
         var isCancellable: Boolean = true
+        var tintButtons: Boolean = true
+        var tintButtonsColor: Int = 0x38D3D3D3
+        var cornerRadius: Float = 10f
         var iosPositiveClickListener: IOSClickListener = object: IOSClickListener {}
         var iosNegativeClickListener: IOSClickListener? = null
         private var blurRadius: Float = 25f
@@ -108,6 +108,16 @@ class IOSAlert private constructor(private val activity1: Activity,
         fun backgroundColor(color: Int) = apply { backgroundColor = color }
 
         /**
+         * Set tintButtons
+         */
+        fun tintButtons(tintButtons: Boolean) = apply { this.tintButtons = tintButtons }
+
+        /**
+         * Set tintButtonsColor
+         */
+        fun tintButtonsColor(tintButtonsColor: Int) = apply { this.tintButtonsColor = tintButtonsColor }
+
+        /**
          * Sets the fragments isCancellable attribute to true or false
          * [DialogFragment.isCancelable]
          */
@@ -121,6 +131,8 @@ class IOSAlert private constructor(private val activity1: Activity,
                 blurRadius = radius
         }
 
+        fun cornerRadius(cornerRadius: Float) = apply { this.cornerRadius = cornerRadius }
+
         /**
          * Will build and return the iOSAlert instance with the parameters specified in the Builder
          */
@@ -129,6 +141,9 @@ class IOSAlert private constructor(private val activity1: Activity,
             iosAlert!!.blurRadius = blurRadius
             iosAlert!!.backgroundColor = backgroundColor
             iosAlert!!.isCancelable = isCancellable
+            iosAlert!!.tintButtons = tintButtons
+            iosAlert!!.tintButtonsColor = tintButtonsColor
+            iosAlert!!.cornerRadius = cornerRadius
             return iosAlert!!
         }
 
@@ -151,7 +166,7 @@ class IOSAlert private constructor(private val activity1: Activity,
         val blurView: BlurView = v.findViewById(R.id.blurView)
         val titleTextView: TextView = v.findViewById(R.id.popUpTitle)
         val bodyTextView: TextView = v.findViewById(R.id.popUpBody)
-        val okButton: Button = v.findViewById(R.id.popUpOkButton)
+        val positiveButton: Button = v.findViewById(R.id.popUpOkButton)
         var negativeButton: Button? = null
 
         if (body.isNullOrEmpty()) blurView.findViewById<LinearLayout>(R.id.layoutInsideBlurView).removeView(bodyTextView)
@@ -161,7 +176,7 @@ class IOSAlert private constructor(private val activity1: Activity,
         titleTextView.text = title
         positiveText = positiveText ?: "OK"
 
-        val positiveClickListener = getOkButtonClickListener()
+        val positiveClickListener = getPositiveButtonClickListener()
         if (negativeText != null || iosNegativeClickListener != null) {
             // Add a negative button
             negativeButton = getNegativeButton()
@@ -170,8 +185,11 @@ class IOSAlert private constructor(private val activity1: Activity,
             linearLayout.addView(negativeButton, 0)
 
         }
-        okButton.setOnClickListener(positiveClickListener)
+        positiveButton.setOnClickListener(positiveClickListener)
+        if (tintButtons)
+            positiveButton.setOnTouchListener(getOnTouchTintListener())
         // set typeface
+        setTypefaceSettings(titleTextView, bodyTextView, positiveButton, negativeButton)
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -181,12 +199,12 @@ class IOSAlert private constructor(private val activity1: Activity,
         val rootView = decorView.findViewById<View>(android.R.id.content) as ViewGroup
         val windowBackground = decorView.background
 
-        if (backgroundColor != null) {
-            val backgroundDrawable = GradientDrawable()
-            backgroundDrawable.cornerRadius = dpToPixel(10f)
-            backgroundDrawable.setColor(backgroundColor!!)
-            blurView.background = backgroundDrawable
-        }
+
+        val backgroundDrawable = GradientDrawable()
+        backgroundDrawable.cornerRadius = dpToPixel(cornerRadius, resources)
+        backgroundDrawable.setColor(backgroundColor)
+        blurView.background = backgroundDrawable
+
         
         blurView.setupWith(rootView)
             .setFrameClearDrawable(windowBackground)
@@ -200,7 +218,20 @@ class IOSAlert private constructor(private val activity1: Activity,
         return v
     }
 
-    private fun getOkButtonClickListener(): View.OnClickListener {
+    /**
+     * Check if the view exists and if it is of type TextView or Subclass of that assign the typeface
+     */
+    private fun setTypefaceSettings(vararg views: View?) {
+        for (v in views) {
+            if (v != null) {
+                if (v is TextView) {
+                    v.typeface = typeface
+                }
+            }
+        }
+    }
+
+    private fun getPositiveButtonClickListener(): View.OnClickListener {
         return View.OnClickListener {
             iosPositiveClickListener.onClick(dialog)
         }
@@ -214,6 +245,38 @@ class IOSAlert private constructor(private val activity1: Activity,
         }
     }
 
+    private fun getOnTouchTintListener(): View.OnTouchListener {
+        return View.OnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val background = ColorDrawable()
+                val anim = ValueAnimator.ofArgb(Color.TRANSPARENT, tintButtonsColor)
+                anim.addUpdateListener {
+                    val value = it.animatedValue as Int
+                    background.color = value
+                    v.background = background
+
+                }
+                anim.duration = 150
+                anim.start()
+
+            } else if (event.action == MotionEvent.ACTION_UP) {
+
+                val background = ColorDrawable()
+                val anim = ValueAnimator.ofArgb(tintButtonsColor, Color.TRANSPARENT)
+                anim.addUpdateListener {
+                    val value = it.animatedValue as Int
+                    background.color = value
+                    v.background = background
+
+                }
+                anim.duration = 150
+                anim.start()
+            }
+
+            false
+        }
+    }
+
     private fun getNegativeButton(): Button {
         return Button(activity1).apply {
             setTextColor(Color.RED)
@@ -221,34 +284,20 @@ class IOSAlert private constructor(private val activity1: Activity,
             if (this@IOSAlert.typeface != null)
                 typeface = this@IOSAlert.typeface
 
-            layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, dpToPixel(44f).toInt(), 0.5f)
-            setBackgroundColor(Color.TRANSPARENT)
+            layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT, 0.5f)
+            background = ColorDrawable(Color.TRANSPARENT)
             setOnClickListener(getNegativeButtonClickListener())
+            if (tintButtons)
+                setOnTouchListener(getOnTouchTintListener())
         }
     }
 
     private fun getLineSeparator(): View {
         return View(activity1).apply {
-            layoutParams = LinearLayout.LayoutParams(dpToPixel(0.5f).toInt(), MATCH_PARENT)
+            layoutParams = LinearLayout.LayoutParams(dpToPixel(0.5f, resources).toInt(), MATCH_PARENT)
             setBackgroundColor(Color.parseColor("#9FAAAAAA"))
 
         }
     }
 
-    private fun dpToPixel(dp: Float): Float {
-        val r: Resources = resources
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp,
-            r.displayMetrics
-        )
-
-    }
-
-}
-
-interface IOSClickListener {
-    fun onClick(dialog: Dialog?) {
-        dialog?.dismiss()
-    }
 }

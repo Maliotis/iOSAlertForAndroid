@@ -1,6 +1,8 @@
 package com.maliotis.ioslikealert
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
             })
             .negativeText("Done")
-            .transparency(0.0f)
+            .cornerRadius(10f)
             .isCancellable(false)
             .buildAndShow()
 

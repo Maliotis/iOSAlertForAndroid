@@ -56,19 +56,17 @@
             <LinearLayout
                 android:id="@+id/linear_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="44dp">
 
 
 
                 <Button
                     android:id="@+id/popUpOkButton"
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:background="@android:color/transparent"
-                    android:foreground="?android:attr/selectableItemBackground"
                     android:text="ok"
-
                     android:textColor="#2196F3"
                     android:textSize="18sp" />
 
