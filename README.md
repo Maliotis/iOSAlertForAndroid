@@ -1,6 +1,6 @@
 # iOSAlertForAndroid
 
-iOSAlertForAndroid is an easy to use library for displaying ios likel alerts.
+iOSAlertForAndroid is an easy to use library for displaying ios like alerts.
 
 ## Setup
   
