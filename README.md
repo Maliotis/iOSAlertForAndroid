@@ -26,8 +26,8 @@ A simple usage of the library
 
 ```Kotlin
 IOSAlert.Builder(this)
-            .title("title")
-            .body("body")
+            .title("Title")
+            .body("This is a body text")
             .iOSAlertPositiveClickListener(object: IOSClickListener {
                 override fun onClick(dialog: Dialog?) {
                     // Your code here on Positive Click
