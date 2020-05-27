@@ -18,10 +18,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val iosAlert = IOSAlert.Builder(this)
-            .title("title")
-            .body("body")
-            .blurRadius(25f)
+        IOSAlert.Builder(this)
+            .title("Title")
+            .body("This is a body text")
             .iOSAlertPositiveClickListener(object: IOSClickListener {
                 override fun onClick(dialog: Dialog?) {
                     // Your code here on Positive Click
@@ -29,9 +28,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
-            .negativeText("Done")
-            .cornerRadius(10f)
-            .isCancellable(false)
             .buildAndShow()
 
         //iosAlert.show(supportFragmentManager, "tag")
